@@ -56,13 +56,6 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
 
-    - name: Run tests (optional)
-      run: |
-        # Add your Go tests here if needed
-        docker build --target=build-stage -t email-service-test .
-        # Or run Go tests directly
-        # docker run --rm email-service-test go test ./...
-
   security-scan:
     runs-on: ubuntu-latest
     needs: build
