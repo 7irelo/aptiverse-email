@@ -31,11 +31,9 @@ func HandleEmailMessage(emailReq *models.EmailRequest, emailSvc *email.Sender) e
 		}
 		log.Printf("Generated email confirmation template for %s", emailReq.To)
 	default:
-		// If no template type is specified, we cannot generate the email
 		return fmt.Errorf("no template type specified for email to %s. Available types: 'email_confirmation'", emailReq.To)
 	}
 	
-	// Send the email with the generated HTML body
 	if err := emailSvc.Send(emailReq.To, emailReq.Subject, htmlBody); err != nil {
 		return fmt.Errorf("failed to send email: %v", err)
 	}

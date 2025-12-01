@@ -14,5 +14,5 @@ type EmailRequest struct {
 	Email            string    `json:"email,omitempty"`
 	UserType         string    `json:"userType,omitempty"`
 	ConfirmationLink string    `json:"confirmationLink,omitempty"`
-	TemplateType     string    `json:"templateType,omitempty"` // "email_confirmation", etc.
+	TemplateType     string    `json:"templateType,omitempty"`
 }

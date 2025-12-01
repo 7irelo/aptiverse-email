@@ -17,7 +17,6 @@ func NewSender(cfg *config.Config) *Sender {
 	return &Sender{config: cfg}
 }
 
-// Send now takes individual parameters instead of EmailRequest
 func (s *Sender) Send(to, subject, htmlBody string) error {
 	auth := smtp.PlainAuth("", 
 		s.config.SMTP.Username, 
@@ -31,7 +30,6 @@ func (s *Sender) Send(to, subject, htmlBody string) error {
 		from = s.config.SMTP.Username
 	}
 
-	// Validate email addresses
 	if _, err := mail.ParseAddress(from); err != nil {
 		return fmt.Errorf("invalid from address: %v", err)
 	}
@@ -39,7 +37,6 @@ func (s *Sender) Send(to, subject, htmlBody string) error {
 		return fmt.Errorf("invalid to address: %v", err)
 	}
 
-	// Create MIME headers for HTML email
 	headers := make(map[string]string)
 	headers["From"] = from
 	headers["To"] = to
@@ -47,7 +44,6 @@ func (s *Sender) Send(to, subject, htmlBody string) error {
 	headers["MIME-Version"] = "1.0"
 	headers["Content-Type"] = "text/html; charset=\"UTF-8\""
 
-	// Build the message
 	message := ""
 	for k, v := range headers {
 		message += fmt.Sprintf("%s: %s\r\n", k, v)

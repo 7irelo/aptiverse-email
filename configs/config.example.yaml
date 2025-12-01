@@ -13,7 +13,6 @@ smtp:
   username: "your-email@gmail.com"
   from: "your-email@gmail.com"
 
-# Optional: Retry configuration
 retry:
   max_attempts: 3
   backoff_multiplier: 2

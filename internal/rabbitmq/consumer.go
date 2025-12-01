@@ -35,20 +35,20 @@ func NewConsumer(cfg *config.Config) (*Consumer, error) {
 
 	_, err = channel.QueueDeclare(
 		cfg.RabbitMQ.QueueName,
-		true,  // durable
-		false, // autoDelete
-		false, // exclusive
-		false, // noWait
-		nil,   // arguments
+		true,
+		false,
+		false,
+		false,
+		nil,
 	)
 	if err != nil {
 		return nil, err
 	}
 
 	err = channel.Qos(
-		cfg.App.MaxWorkers, // prefetch count
-		0,     // prefetch size
-		false, // global
+		cfg.App.MaxWorkers,
+		0,
+		false,
 	)
 	if err != nil {
 		return nil, err
@@ -70,12 +70,12 @@ func (c *Consumer) Start() error {
     
     msgs, err := c.channel.Consume(
         c.config.RabbitMQ.QueueName,
-        "",    // consumer
-        false, // autoAck
-        false, // exclusive
-        false, // noLocal
-        false, // noWait
-        nil,   // arguments
+        "",
+        false,
+        false,
+        false,
+        false,
+        nil,
     )
     if err != nil {
         return err
@@ -104,15 +104,15 @@ func (c *Consumer) worker(msgs <-chan amqp.Delivery, workerID int) {
 		var emailReq models.EmailRequest
 		if err := json.Unmarshal(msg.Body, &emailReq); err != nil {
 			log.Printf("Worker %d: Failed to parse message: %v", workerID, err)
-			msg.Nack(false, false) // Reject without requeue
+			msg.Nack(false, false)
 			continue
 		}
 
 		if err := handlers.HandleEmailMessage(&emailReq, c.emailSvc); err != nil {
 			log.Printf("Worker %d: Failed to process email: %v", workerID, err)
-			msg.Nack(false, true) // Reject with requeue
+			msg.Nack(false, true)
 		} else {
-			msg.Ack(false) // Acknowledge message
+			msg.Ack(false)
 			log.Printf("Worker %d: Successfully sent email to %s", workerID, emailReq.To)
 		}
 	}
